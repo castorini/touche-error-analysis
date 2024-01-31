@@ -1,0 +1,9 @@
+Downloading https://search.maven.org/remotecontent?filepath=uk/ac/gla/dcs/terrierteam/jtreceval/0.0.5/jtreceval-0.0.5-jar-with-dependencies.jar to /home/n3thakur/.cache/pyserini/eval/jtreceval-0.0.5-jar-with-dependencies.jar...
+/home/n3thakur/.cache/pyserini/eval/jtreceval-0.0.5-jar-with-dependencies.jar already exists!
+Skipping download.
+Running command: ['java', '-jar', '/home/n3thakur/.cache/pyserini/eval/jtreceval-0.0.5-jar-with-dependencies.jar', '-c', '-m', 'ndcg_cut.10', '-m', 'recall.100,1000', '/store2/scratch/n3thakur/beir-datasets/webis-touche2020/anserini/qrels-new.trec', '/store2/scratch/n3thakur/touche-ablations/output/bm25/original_touche2020/runs/runs.webis-touche2020-multifield.trec']
+Results:
+recall_100            	all	0.5376
+recall_1000           	all	0.8668
+ndcg_cut_10           	all	0.3673
+judged_10             	all	0.3837

@@ -1,0 +1,13 @@
+RetroMAE_BEIR/filtered_4_model_holes_filled/run.jsonl
+RetroMAE_BEIR/original/run.jsonl
+SPLADEv2/filtered_4_model_holes_filled/run.jsonl
+SPLADEv2/original/run.jsonl
+bm25-webis-touche2020-multifield/filtered_4_model_holes_filled/run.jsonl
+bm25-webis-touche2020-multifield/original/run.jsonl
+contriever-base-msmarco/filtered_4_model_holes_filled/run.jsonl
+contriever-base-msmarco/original/run.jsonl
+dragon-plus-encoder/filtered_4_model_holes_filled/run.jsonl
+dragon-plus-encoder/original/run.jsonl
+index-for-ir-axioms/pyterrier-index/
+msmarco-distilbert-base-tas-b/filtered_4_model_holes_filled/run.jsonl
+msmarco-distilbert-base-tas-b/original/run.jsonl

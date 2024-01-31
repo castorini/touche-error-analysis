@@ -1,0 +1,6 @@
+{"Model":"Contriever","Agreement":560,"Disagreement":814,"AgreementRatio":0.4075691412}
+{"Model":"TAS-B","Agreement":534,"Disagreement":840,"AgreementRatio":0.3886462882}
+{"Model":"DRAGON+","Agreement":543,"Disagreement":831,"AgreementRatio":0.3951965066}
+{"Model":"BM25","Agreement":1367,"Disagreement":7,"AgreementRatio":0.9949053857}
+{"Model":"SPLADEv2","Agreement":937,"Disagreement":437,"AgreementRatio":0.6819505095}
+{"Model":"CITADEL+","Agreement":1087,"Disagreement":287,"AgreementRatio":0.7911208151}
