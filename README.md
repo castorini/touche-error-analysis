@@ -1,20 +1,4 @@
-# Error Analysis for Argument Retrieval on Touche 2020
-This code repository contains data, code and results for our work in an undergoing submission at ECIR 2024.
-
-The paper title is "Old is Gold? Systematic Error Analysis of Neural Retrieval Models against BM25 for Argument Retrieval"
-
-## DATA: webis-touche2020-v3 (Contains Denoised and Human-judged annotations)
-
-The Touche 2020 dataset (denoised + post-hoc judged) can be downloaded from here: [https://huggingface.co/datasets/OldisGold/webis-touche2020-v3](https://huggingface.co/datasets/OldisGold/webis-touche2020-v3).
-- `corpus.jsonl` contains 303,372 arguments with empty title and argument premise as body.
-- `queries.jsonl` contains 49 controversial queries (all test).
-- `qrels/test.tsv` contains 2,849 relevance judgements in total.
-
-## Installation
-
-You will need to install tookits: Anserini (BM25), Sprint-toolkit (SPLADEv2) and BEIR (Dense Models and Evaluation).
-
-## Code Organization
+<!-- ## Code Organization
 
 This repository has the following code organized:
 
@@ -34,5 +18,72 @@ This repository has the following code organized:
 
         - [src/eval](/webis-touche2020/src/eval/) contains the code for different model evaluation in Touche-2020.
 
-        - [src/util](/webis-touche2020/src/util/) contains simple util helper scripts.
+        - [src/util](/webis-touche2020/src/util/) contains simple util helper scripts. -->
 
+# Systematic Evaluation of Neural Retrieval Models on the Touché 2020 Argument Retrieval Subset of BEIR
+
+The zero-shot effectiveness of neural retrieval models is often evaluated on the BEIR benchmark—a combination of different IR evaluation datasets. Interestingly, previous studies found that particularly on the BEIR subset Touché 2020, an argument retrieval task, neural retrieval models are considerably less effective than BM25. Still, so far, no further investigation has been conducted on what makes argument retrieval so “special”. To more deeply analyze the respective potential limits of neural retrieval models, we run a reproducibility study on the Touché 2020 data. In our study, we focus on two experiments: 
+1. A black-box evaluation (i.e., no model retraining), incorporating a theoretical exploration using retrieval axioms
+2. A data denoising evaluation involving post-hoc relevance judgments.
+
+## Getting Started
+
+### Installation
+You will need to install tookits: Anserini (BM25), Sprint-toolkit (SPLADEv2) and BEIR (Dense Models and Evaluation). To install the necessary packages, run:
+
+```sh
+conda create -n python_env python=3.10
+conda activate python_env
+
+# Install JDK 21 via conda
+conda install -c conda-forge openjdk=21
+
+# PyPI installations: BEIR, Pyserini, SPRINT
+pip install -r requirements.txt
+```
+
+### Dataset
+
+The Touche 2020 v3 dataset (denoised + post-hoc judged) can be found here: [castorini/webis-touche2020-v3](https://huggingface.co/datasets/castorini/webis-touche2020-v3).
+- `corpus.jsonl` contains 303,372 arguments with argument premise as body (filtering the argument corpus).
+- `queries.jsonl` contains 49 controversial queries (all test queries).
+- `qrels/test.tsv` contains 2,849 relevance judgements in total (including additional post-hoc relevance judgements).
+
+## Examples
+
+
+## Citation
+
+If you use this code or dataset in your research, please cite our SIGIR 2024 paper.
+
+```python
+@INPROCEEDINGS{Thakur_etal_SIGIR2024,
+   author = "Nandan Thakur and Luiz Bonifacio and Maik {Fr\"{o}be} and Alexander Bondarenko and Ehsan Kamalloo and Martin Potthast and Matthias Hagen and Jimmy Lin",
+   title = "Systematic Evaluation of Neural Retrieval Models on the {Touch\'{e}} 2020 Argument Retrieval Subset of {BEIR}",
+   booktitle = "Proceedings of the 47th International ACM SIGIR Conference on Research and Development in Information Retrieval",
+   year = 2024,
+   address_ = "Washington, D.C."
+}
+```
+
+## License
+
+This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE) file for details.
+
+## Authors
+
+- Nandan Thakur (University of Waterloo, Waterloo, Canada)
+- Luiz Bonifacio (UNICAMP and University of Waterloo, Campinas, Brazil)
+- Maik Fröbe (Friedrich-Schiller-Universität Jena, Jena, Germany)
+- Alexander Bondarenko (Leipzig University and Friedrich-Schiller-Universität Jena, Leipzig, Germany)
+- Ehsan Kamalloo (University of Waterloo, Waterloo, Canada)
+- Martin Potthast (University of Kassel, hessian.AI, and ScaDS.AI, Kassel, Germany)
+- Matthias Hagen (Friedrich-Schiller-Universität Jena, Jena, Germany)
+- Jimmy Lin (University of Waterloo, Waterloo, Canada)
+
+## Acknowledgments
+
+We would like to thank all contributors and the institutions involved in this research. Special thanks to the BEIR benchmark and Touch-2020 authors.
+
+```
+This repository contains experimental software and is published for the sole purpose of giving additional background details on the respective publication.
