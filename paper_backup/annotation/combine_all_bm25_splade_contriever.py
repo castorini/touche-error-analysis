@@ -86,28 +86,6 @@ for words in [20]:
 
     print(queries)
     
-    
-    # contriever_filepath = "/home/n3thakur/projects/beir-analysis/dataset/webis-touche2020/passage_filtering_exps/output/contriever/unjudged-docs-contriever-clean-more-than-20-words.csv"
-    # reader = csv.reader(open(contriever_filepath, encoding="utf-8"), quoting=csv.QUOTE_MINIMAL)
-    # next(reader)
-
-    # for id, data in enumerate(reader):
-    #     if data[0] not in top_k_retrieved:
-    #         top_k_retrieved[data[0]] = set()
-        
-    #     if data[3] not in qrels[data[0]]:
-    #         top_k_retrieved[data[0]].add(data[3])
-    
-    # bm25_filepath = "/home/n3thakur/projects/beir-analysis/dataset/webis-touche2020/passage_filtering_exps/output/bm25/runs/run.beir-v1.0.0-webis-touche2020-multifield-top10.trec"
-    # reader = csv.reader(open(bm25_filepath, encoding="utf-8"), delimiter=" ", quoting=csv.QUOTE_MINIMAL)
-    
-    # for id, data in enumerate(reader):
-    #     if data[0] not in top_k_retrieved:
-    #         top_k_retrieved[data[0]] = set()
-        
-    #     if data[2] not in qrels[data[0]]:
-    #         top_k_retrieved[data[0]].add(data[2])
-    
     documents_filepath = os.path.join(pathlib.Path(__file__).parent.absolute(), "output", "all", f"unjudged-docs-splade-extra-clean-more-than-20-words.csv")
     with open(documents_filepath, "w") as text_file:
         writer = csv.writer(text_file, quoting=csv.QUOTE_MINIMAL)

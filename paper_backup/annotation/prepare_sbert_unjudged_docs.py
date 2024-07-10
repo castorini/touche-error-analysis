@@ -1,9 +1,4 @@
 from beir import util, LoggingHandler
-from beir.retrieval import models
-from beir.datasets.data_loader import GenericDataLoader
-from beir.retrieval.evaluation import EvaluateRetrieval
-from beir.retrieval.search.dense import DenseRetrievalExactSearch as DRES
-from nltk import word_tokenize
 
 import logging
 import pathlib, os
@@ -84,7 +79,7 @@ for words in [20]:
     corpus = load_corpus(f"/store2/scratch/n3thakur/touche-ablations/webis-touche2020-20-words/corpus.jsonl")
     queries = load_queries(f"/store2/scratch/n3thakur/touche-ablations/webis-touche2020-20-words/queries.jsonl")
 
-    # Results of RetroMAE
+    # Results of CITADEL+
     results_citadel = load_results("/home/n3thakur/projects/beir-analysis/webis-touche2020/runs/filtered_4_model_holes_filled/run-citadel-plus.trec")
 
     # Results of Dragon+
@@ -110,59 +105,3 @@ for words in [20]:
         for query_id in docs_visited:
             for doc_id in docs_visited[query_id]:
                 writer.writerow([query_id, queries[query_id], "", doc_id, corpus[doc_id].get("text")])
-
-    # corpus = load_corpus(f"/home/n3thakur/projects/beir-analysis/dataset/webis-touche2020/passage_filtering_exps/datasets/webis-touche2020-20-words/corpus.jsonl")
-    # qrels_judged = load_qrels(f"{data_path}/qrels/test.tsv")
-
-    # print(len(corpus))
-    
-    # for query_id in qrels_judged:
-    #     qrels_new[query_id] = {}
-    #     for doc_id, score in qrels_judged[query_id].items():
-    #         if doc_id in corpus:
-    #             count += 1
-    #             qrels_new[query_id][doc_id] = score
-
-    # with open(f"/home/n3thakur/projects/beir-analysis/dataset/webis-touche2020/passage_filtering_exps/datasets/webis-touche2020-20-words/qrels/test.tsv", "w") as text_file:
-    #     writer = csv.writer(text_file, delimiter="\t", quoting=csv.QUOTE_MINIMAL)
-    #     writer.writerow(["query-id", "doc-id", "score"])
-    #     for query_id, corpus_dict in qrels_new.items():
-    #         for corpus_id, score in corpus_dict.items():
-    #             writer.writerow([query_id, corpus_id, int(score)])
-                
-
-
-    #### Dense Retrieval using SBERT (Sentence-BERT) ####
-    #### Provide any pretrained sentence-transformers model
-    #### The model was fine-tuned using cosine-similarity.
-    #### Complete list - https://www.sbert.net/docs/pretrained_models.html
-
-    # model = DRES(models.SentenceBERT("nthakur/contriever-base-msmarco"), batch_size=128)
-    # retriever = EvaluateRetrieval(model, score_function="dot")
-
-    # #### Retrieve dense results (format of results is identical to qrels)
-    # results = retriever.retrieve(corpus, queries)
-
-    # #### Evaluate your retrieval using NDCG@k, MAP@K ...
-
-    # # logging.info("Retriever evaluation for k in: {}".format(retriever.k_values))
-    # # ndcg, _map, recall, precision = retriever.evaluate(qrels, results, retriever.k_values)
-
-    # # mrr = retriever.evaluate_custom(qrels, results, retriever.k_values, metric="mrr")
-    # # recall_cap = retriever.evaluate_custom(qrels, results, retriever.k_values, metric="r_cap")
-    # # hole = retriever.evaluate_custom(qrels, results, retriever.k_values, metric="hole")
-
-    # #### Print top-k documents retrieved ####
-    # top_k = 10
-
-    # #### Print top-k docs retrieved ####
-    # documents_filepath = os.path.join(pathlib.Path(__file__).parent.absolute(), "output", "contriever", f"unjudged-docs-contriever-clean-more-than-{words}-words.csv")
-    # with open(documents_filepath, "w") as text_file:
-    #     writer = csv.writer(text_file, quoting=csv.QUOTE_MINIMAL)
-    #     writer.writerow(["query-id", "query", "relevant", "doc-id", "document"])
-    #     for query_id, ranking_scores in results.items():
-    #         scores_sorted = sorted(ranking_scores.items(), key=lambda item: item[1], reverse=True)
-    #         for rank in range(top_k):
-    #             doc_id = scores_sorted[rank][0]
-    #             if doc_id not in qrels_judged[query_id]:
-    #                 writer.writerow([query_id, queries[query_id], "", doc_id, corpus[doc_id].get("text")])
