@@ -1,35 +1,39 @@
-<!-- ## Code Organization
+<div align="center">
 
-This repository has the following code organized:
+<h1>Touché 2020 V3</h1>
 
-- [webis-touche2020](/webis-touche2020/) contains the following folders and subfolders within the main repository.
-    
-    - [plots](/webis-touche2020/src/plots/) contains code for plotting boxplots for Fig. 1 in the paper.
-    
-    - [results](/webis-touche2020/src/results/) contains eval results for Touche 2020 experiments conducted in the paper.
+<i>Systematic Evaluation of Neural Retrieval Models on the Touché 2020 Argument Retrieval Subset of BEIR</i>
 
-    - [runs](/webis-touche2020/src/runs/) contains TREC runfiles for Touche 2020 experiments conducted in the paper.
+<table>
+      <tr>
+            <td>
+                  <a href="https://github.com/castorini/touche-error-analysis">💻 GitHub</a>
+            </td>
+            <td>
+                  <a href="https://huggingface.co/datasets/castorini/webis-touche2020-v3">🤗 Dataset</a>
+            </td>
+            <td>
+                  <a href="https://downloads.webis.de/publications/papers/thakur_2024.pdf">📝 SIGIR 2024 Paper</a>
+            </td>
+      </tr>
+</table>
+</div>
 
-    - [src](/webis-touche2020/src/) contains the code for experiments conducted in the paper.
-        
-        - [src/analysis](/webis-touche2020/src/analysis/) contains the code different analysis (document length, error, ir_axioms) done in Touche-2020.
+Welcome to the reproduction study of the Touché 2020 dataset in the BEIR benchmark, where previous studies have found that neural retrieval models are considerably less effective than BM25.We further investigate on what makes argument retrieval so “special”, and "why" do neural retrievers underperform? 
 
-        - [src/data](/webis-touche2020/src/data/) contains code to convert beir dataset to anserini (required for BM25) and filteration techniques.
+![comparison](images/document_length_comparison.png)
 
-        - [src/eval](/webis-touche2020/src/eval/) contains the code for different model evaluation in Touche-2020.
+From the figure above, we observe that a majority of neural retrievers on Touché 2020 retrieve "short" (in length) arguments as their top-10 results which are often non-argumentative. In addition, all retrievers (including BM25) have a huge portion of holes present in the corpus leading to rather low nDCG@10 performances.
 
-        - [src/util](/webis-touche2020/src/util/) contains simple util helper scripts. -->
+**TL;DR:** We clean the Touché 2020 document collection and remove noisy arguments and conduct additional human post-hoc judgements to release a cleaner and better Touché 2020 v3 collection. This repository uses code from existing well-known repositories such as [BEIR](https://github.com/beir-cellar/beir), [Pyserini](https://github.com/castorini/pyserini) and [SPRINT](https://github.com/thakur-nandan/sprint) to get the baseline model scores on Touché 2020 v3 dataset.
 
-# Systematic Evaluation of Neural Retrieval Models on the Touché 2020 Argument Retrieval Subset of BEIR
-
-The zero-shot effectiveness of neural retrieval models is often evaluated on the BEIR benchmark—a combination of different IR evaluation datasets. Interestingly, previous studies found that particularly on the BEIR subset Touché 2020, an argument retrieval task, neural retrieval models are considerably less effective than BM25. Still, so far, no further investigation has been conducted on what makes argument retrieval so “special”. To more deeply analyze the respective potential limits of neural retrieval models, we run a reproducibility study on the Touché 2020 data. In our study, we focus on two experiments: 
-1. A black-box evaluation (i.e., no model retraining), incorporating a theoretical exploration using retrieval axioms
-2. A data denoising evaluation involving post-hoc relevance judgments.
+To learn more about our reproduction study, please refer below to the following publications:
+- [Systematic Evaluation of Neural Retrieval Models on the Touché 2020 Argument Retrieval Subset of BEIR](https://downloads.webis.de/publications/papers/thakur_2024.pdf) (SIGIR 2024, Reproducibility Track)
 
 ## Getting Started
 
 ### Installation
-You will need to install tookits: Anserini (BM25), Sprint-toolkit (SPLADEv2) and BEIR (Dense Models and Evaluation). To install the necessary packages, run:
+You will need to install tookits: Pyserini (BM25), SPRINT toolkit (SPLADEv2) and BEIR (Dense Models). To install the necessary packages, run:
 
 ```sh
 conda create -n python_env python=3.10
@@ -51,6 +55,10 @@ The Touche 2020 v3 dataset (denoised + post-hoc judged) can be found here: [cast
 
 ## Examples
 
+- [evaluate_dense_model.py](examples/evaluate_dense_model.py) contains an example to evaluate any dense retriever (supported by Sentence Transformers) on the Touché 2020 V3 dataset.
+- [evaluate_bm25_lexical.sh](examples/evaluate_bm25_lexical.sh) contains an example to evaluate the BM25 lexical retriever (supported by Pyserini) on the Touché 2020 V3 dataset.
+- [evaluate_sparse_model.sh](examples/evaluate_sparse_model.sh) contains an example to evaluate any sparse retriever (supported by SPRINT toolkit) on the Touché 2020 V3 dataset.
+- For CITADEL+ reproduction, we need to install `dpr-scale` and follow steps here: [https://github.com/thakur-nandan/citadel-repro](https://github.com/thakur-nandan/citadel-repro).
 
 ## Citation
 

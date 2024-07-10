@@ -1,15 +1,14 @@
+"""
+This script converts the Touche-2020 dataset into Anserini format.
+Usage: python convert_beir_dataset_to_anserini.py
+"""
+
 from beir import util, LoggingHandler
-from beir.retrieval import models
 from beir.datasets.data_loader import GenericDataLoader
-from beir.retrieval.evaluation import EvaluateRetrieval
-from beir.retrieval.search.dense import DenseRetrievalExactSearch as DRES
-from nltk import word_tokenize
 
 import logging
 import pathlib, os
-import random
 import json
-import string
 import tqdm
 import csv
 
@@ -20,60 +19,27 @@ logging.basicConfig(format='%(asctime)s - %(message)s',
                     handlers=[LoggingHandler()])
 #### /print debug information to stdout
 
-DATASET_DIR = "/store2/scratch/n3thakur/beir-datasets/final/webis-touche2020-w-title"
-output_dir = os.path.join(DATASET_DIR, "anserini")
+# Path to the BEIR dataset directory
+dataset = "webis-touche2020"
 
-def load_corpus(path):
-    corpus = {}
-    with open(path) as f:
-        for line in f:
-            data = json.loads(line)
-            corpus[data["_id"]] = {"text": data["text"], "title": data["title"]}
-    return corpus
+#### Download nfcorpus.zip dataset and unzip the dataset
+url = "https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/{}.zip".format(dataset)
+out_dir = os.path.join(pathlib.Path(__file__).parent.absolute(), "datasets")
+data_path = util.download_and_unzip(url, out_dir)
 
-def load_queries(path):
-    queries = {}
-    with open(path) as f:
-        for line in f:
-            data = json.loads(line)
-            queries[data["_id"]] = data["text"]
-    return queries
+#### Provide the data path where nfcorpus has been downloaded and unzipped to the data loader
+# data folder would contain these files: 
+# (1) nfcorpus/corpus.jsonl  (format: jsonlines)
+# (2) nfcorpus/queries.jsonl (format: jsonlines)
+# (3) nfcorpus/qrels/test.tsv (format: tsv ("\t"))
 
-def load_qrels(path):
-    qrels = {}
+corpus, queries, qrels = GenericDataLoader(data_folder=data_path).load(split="test")
 
-    reader = csv.reader(open(path, encoding="utf-8"), delimiter="\t", quoting=csv.QUOTE_MINIMAL)
-    next(reader)
-        
-    for id, data in enumerate(reader):
-        if data[0] not in qrels:
-            qrels[data[0]] = {}
-        qrels[data[0]][data[1]] = int(data[2])
-    return qrels
-
-
-corpus = load_corpus(os.path.join(DATASET_DIR, "corpus.jsonl"))
-queries = load_queries(os.path.join(DATASET_DIR, "queries.jsonl"))
-qrels = load_qrels(os.path.join(DATASET_DIR, "qrels", "test.tsv"))
-
-qrels_new = {}
-
-for query_id in qrels:
-    qrels_new[query_id] = {}
-    for doc_id, score in qrels[query_id].items():
-        if doc_id in corpus:
-            qrels_new[query_id][doc_id] = score
-
-queries_new = {}
-
-for query_id in queries:
-    if query_id in qrels_new:
-        queries_new[query_id] = queries[query_id]
-
-qrels = qrels_new
-queries = queries_new
+# Make a directory to save the output
+output_dir = os.path.join(pathlib.Path(__file__).parent.absolute(), "datasets", dataset, "anserini")
 os.makedirs(output_dir, exist_ok=True)
 
+# Save the corpus, with the document text in the contents field
 with open(os.path.join(output_dir, 'corpus.jsonl'), 'w') as fOut:
     for doc_id in tqdm.tqdm(corpus, total=len(corpus)):
         title = corpus[doc_id].get("title", "")
@@ -85,12 +51,14 @@ with open(os.path.join(output_dir, 'corpus.jsonl'), 'w') as fOut:
         }, fOut)
         fOut.write('\n')
 
+# Save the queries as a TSV file with query_id and query
 with open(os.path.join(output_dir, 'queries-test.tsv'), 'w') as fOut:
     writer = csv.writer(fOut, delimiter="\t", quoting=csv.QUOTE_MINIMAL)
     for query_id in tqdm.tqdm(queries, total=len(queries)):
         query = queries[query_id]
         writer.writerow([query_id, query])
 
+# Save the qrels as a TREC file
 with open(os.path.join(output_dir, 'qrels-new.trec'), 'w') as fOut:
     for query_id in tqdm.tqdm(qrels, total=len(qrels)):
         for doc_id, score in qrels[query_id].items():
