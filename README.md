@@ -19,16 +19,18 @@
 </table>
 </div>
 
-Welcome to the reproduction study of the Touché 2020 dataset in the BEIR benchmark, where previous studies have found that neural retrieval models are considerably less effective than BM25.We further investigate on what makes argument retrieval so “special”, and "why" do neural retrievers underperform? 
+Welcome to the reproduction study of the Touché 2020 dataset in the BEIR benchmark, where previous studies have found that neural retrieval models are considerably less effective than BM25.
+
+We further investigate on what makes argument retrieval so “special”, and "why" do neural retrievers underperform BM25 on Touché 2020? 
 
 ![comparison](images/document_length_comparison.png)
 
 From the figure above, we observe that a majority of neural retrievers on Touché 2020 retrieve "short" (in length) arguments as their top-10 results which are often non-argumentative. In addition, all retrievers (including BM25) have a huge portion of holes present in the corpus leading to rather low nDCG@10 performances.
 
-**TL;DR:** We clean the Touché 2020 document collection and remove noisy arguments and conduct additional human post-hoc judgements to release a cleaner and better Touché 2020 v3 collection. This repository uses code from existing well-known repositories such as [BEIR](https://github.com/beir-cellar/beir), [Pyserini](https://github.com/castorini/pyserini) and [SPRINT](https://github.com/thakur-nandan/sprint) to get the baseline model scores on Touché 2020 v3 dataset.
+**TL;DR:** We denoise the Touché 2020 document collection and remove noisy arguments and conduct post-hoc judgements to release a cleaner Touché 2020 v3 collection. This repository uses code from existing well-known repositories such as [BEIR](https://github.com/beir-cellar/beir), [Pyserini](https://github.com/castorini/pyserini) and [SPRINT](https://github.com/thakur-nandan/sprint) for reproduction and provides baseline retrieval model scores on Touché 2020 v3 dataset.
 
 To learn more about our reproduction study, please refer below to the following publications:
-- [Systematic Evaluation of Neural Retrieval Models on the Touché 2020 Argument Retrieval Subset of BEIR](https://downloads.webis.de/publications/papers/thakur_2024.pdf) (SIGIR 2024, Reproducibility Track)
+- [Systematic Evaluation of Neural Retrieval Models on the Touché 2020 Argument Retrieval Subset of BEIR](https://arxiv.org/abs/2407.07790) (SIGIR 2024, Reproducibility Track)
 
 ## Getting Started
 
@@ -91,7 +93,7 @@ This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENS
 
 ## Acknowledgments
 
-We would like to thank all contributors and the institutions involved in this research. Special thanks to the BEIR benchmark and Touch-2020 authors.
+We would like to thank all contributors and the institutions involved in this research. Special thanks to the BEIR benchmark and Touché 2020 authors.
 
 ```
 This repository contains experimental software and is published for the sole purpose of giving additional background details on the respective publication.
